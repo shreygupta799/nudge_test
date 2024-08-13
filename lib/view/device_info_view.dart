@@ -1,75 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:nudge_test/view_model/device_info_view_model.dart';
+import 'package:provider/provider.dart';
 
-class DeviceInfoView extends StatelessWidget {
+
+class DeviceInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<DeviceInfoViewModel>(context);
+    return ChangeNotifierProvider(
+      create: (context) => DeviceInfoViewModel()..loadDeviceInfo(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Device Information'),
+        ),
+        body: Consumer<DeviceInfoViewModel>(
+          builder: (context, viewModel, child) {
+            final deviceInfoModel = viewModel.deviceInfoModel;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Device Information"),
-      ),
-      body: viewModel.deviceInfoModel == null
-          ? Center(
-              child: ElevatedButton(
-                onPressed: () => viewModel.fetchDeviceInfo(),
-                child: Text("Fetch Device Info"),
-              ),
-            )
-          : ListView(
+            if (deviceInfoModel == null) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            return ListView(
+              padding: EdgeInsets.all(16.0),
               children: [
-                ListTile(
-                  title: Text("Timezone"),
-                  subtitle: Text(viewModel.deviceInfoModel!.timezone),
-                ),
-                ListTile(
-                  title: Text("Internet State"),
-                  subtitle: Text(viewModel.deviceInfoModel!.internetState),
-                ),
-                ListTile(
-                  title: Text("Brand"),
-                  subtitle: Text(viewModel.deviceInfoModel!.brand),
-                ),
-                ListTile(
-                  title: Text("Model"),
-                  subtitle: Text(viewModel.deviceInfoModel!.model),
-                ),
-                ListTile(
-                  title: Text("Device Language"),
-                  subtitle: Text(viewModel.deviceInfoModel!.deviceLanguage),
-                ),
-                ListTile(
-                  title: Text("App Version"),
-                  subtitle: Text(viewModel.deviceInfoModel!.appVersion),
-                ),
-                ListTile(
-                  title: Text("Battery Level"),
-                  subtitle:
-                      Text(viewModel.deviceInfoModel!.batteryLevel.toString()),
-                ),
-                ListTile(
-                  title: Text("OS"),
-                  subtitle: Text(viewModel.deviceInfoModel!.os),
-                ),
-                ListTile(
-                  title: Text("OS Version"),
-                  subtitle: Text(viewModel.deviceInfoModel!.osVersion),
-                ),
-                ListTile(
-                  title: Text("Build Mode"),
-                  subtitle: Text(viewModel.deviceInfoModel!.buildMode),
-                ),
-                ListTile(
-                  title: Text("Screen Height"),
-                  subtitle: Text(viewModel.deviceInfoModel!.height.toString()),
-                ),
-                ListTile(
-                  title: Text("Screen Width"),
-                  subtitle: Text(viewModel.deviceInfoModel!.width.toString()),
-                ),
+                Text('Timezone: ${deviceInfoModel.timezone ?? 'N/A'}'),
+                Text('Internet State: ${deviceInfoModel.internetState ? 'Connected' : 'Disconnected'}'),
+                Text('Brand: ${deviceInfoModel.brand}'),
+                Text('Model: ${deviceInfoModel.model}'),
+                Text('Device Language: ${deviceInfoModel.deviceLanguage}'),
+                Text('App Version: ${deviceInfoModel.appVersion}'),
+                Text('Battery Level: ${deviceInfoModel.batteryLevel}'),
+                Text('OS: ${deviceInfoModel.os}'),
+                Text('OS Version: ${deviceInfoModel.osVersion}'),
+                Text('Build Mode: ${deviceInfoModel.buildMode}'),
+                Text('Height: ${deviceInfoModel.height} pixels'),
+                Text('Width: ${deviceInfoModel.width} pixels'),
               ],
-            ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
