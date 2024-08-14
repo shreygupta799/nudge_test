@@ -44,7 +44,11 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildInfoRow("Timezone", deviceInfo?.timezone),
-          _buildInfoRow("Internet State", deviceInfo?.internetState.toString()),
+          _buildInfoRow(
+              "Internet State",
+              (deviceInfo?.internetState.toString() == "true")
+                  ? "Connected"
+                  : "Disconnected"),
           _buildInfoRow("Brand", deviceInfo?.brand),
           _buildInfoRow("Model", deviceInfo?.model),
           _buildInfoRow("Device Language", deviceInfo?.deviceLanguage),

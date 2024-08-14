@@ -9,8 +9,8 @@ class DeviceInfoModel {
   final String os;
   final String osVersion;
   final String buildMode;
-  final double height;
-  final double width;
+  final int height;
+  final int width;
 
   DeviceInfoModel({
     required this.timezone,
@@ -39,8 +39,8 @@ class DeviceInfoModel {
       os: map['os'] as String,
       osVersion: map['osVersion'] as String,
       buildMode: map['buildMode'] as String,
-      height: (map['height'] as num).toDouble(),
-      width: (map['width'] as num).toDouble(),
+      height: (map['height'] as num).toInt(),
+      width: (map['width'] as num).toInt(),
     );
   }
 
